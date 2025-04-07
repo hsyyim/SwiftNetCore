@@ -1,7 +1,5 @@
-# Swift Network Module
+# Swift Network Core Module
 > A Clean Architecture-based network layer for iOS, focused on security, testability, and modular scalability.
-
----
 
 ## Overview
 
@@ -14,8 +12,6 @@ Client → Middleware(s) → NetworkService → Real Request or Retry → Respon
 - Easily testable with `MockService` and in-memory mocks
 - **Security-first** with Keychain token storage and JWT-based proactive refresh
 
----
-
 ## Core Components
 
 | Component           | Description                                          |
@@ -27,7 +23,6 @@ Client → Middleware(s) → NetworkService → Real Request or Retry → Respon
 | `TokenRefresher`    | Handles refresh token logic to get new access tokens |
 | `JWTToken`          | Parses JWT `exp` field for proactive refresh checks  |
 
----
 
 ## Security & Expiry
 
@@ -35,7 +30,6 @@ Client → Middleware(s) → NetworkService → Real Request or Retry → Respon
 - If the token is close to expiration, it's proactively refreshed
 - If the `RefreshToken` is invalid or expired, logout is triggered automatically
 
----
 
 ## Testability
 
@@ -43,7 +37,6 @@ Client → Middleware(s) → NetworkService → Real Request or Retry → Respon
 - `MockTokenRefresher` and in-memory token stores available for flow validation
 - Combine-based `.publisher()` also testable
 
----
 
 ## Usage Example
 
@@ -71,7 +64,6 @@ service.publisher(MyRequest())
     .store(in: &cancellables)
 ```
 
----
 
 ## 📄 License
 
