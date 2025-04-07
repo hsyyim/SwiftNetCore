@@ -1,0 +1,23 @@
+### Xcode ###
+## User settings
+xcuserdata/
+
+## Project files
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+/*.gcno
+**/xcshareddata/WorkspaceSettings.xcsettings
+
+### SwiftPM ###
+.build/
+.swiftpm/
+
+### Derived Data ###
+DerivedData/
+
+### Secrets or generated values ###
+# (Uncomment if internal TokenStore is private)
+# **/*TokenStore.swift
