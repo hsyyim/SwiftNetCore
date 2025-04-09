@@ -6,3 +6,9 @@
 //
 
 import Foundation
+@testable import SwiftNetCore
+
+struct StaticHostProvider: APIHostProviding {
+    var baseURL: URL { URL(string: "https://mock.local/test")! }
+}
+

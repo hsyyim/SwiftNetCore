@@ -6,3 +6,11 @@
 //
 
 import Foundation
+@testable import SwiftNetCore
+
+struct TestRequest: NetworkRequest {
+    typealias Response = TestResponse
+    
+    var path: String { "/test" }
+    var method: HTTPMethod { .get }
+}

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+@testable import SwiftNetCore
 
 final class MockSession: URLSessionProtocol {
     private var handler: (URLRequest) throws -> (Data, URLResponse)
