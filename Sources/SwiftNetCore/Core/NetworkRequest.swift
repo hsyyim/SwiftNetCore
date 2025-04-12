@@ -24,7 +24,15 @@ public extension NetworkRequest {
     var body: RequestBody { .none }
 
     func makeURLRequest(using hostProvider: APIHostProviding) -> URLRequest {
-        var request = URLRequest(url: hostProvider.baseURL.appendingPathComponent(path))
+        var url = hostProvider.baseURL.appendingPathComponent(path)
+        
+        if method == .get, let convertible = self as? RequestQueryItemConvertible {
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+            components?.queryItems = convertible.queryItems
+            url = components?.url ?? url
+        }
+        
+        var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
 
         headers?.forEach { key, value in
