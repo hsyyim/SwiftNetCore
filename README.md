@@ -7,7 +7,6 @@ A lightweight and testable network abstraction layer for iOS, inspired by Clean 
 - Protocol-oriented and dependency-injected networking
 - Support for query parameters, JSON, raw, and multipart bodies
 - Middleware system for header injection and request transformation
-- Full support for async/await with extensibility for Combine
 - Built-in mockable test infrastructure with error coverage
 
 ## Installation
