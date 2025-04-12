@@ -1,71 +1,70 @@
-# Swift Network Core Module
-> A Clean Architecture-based network layer for iOS, focused on security, testability, and modular scalability.
+# SwiftNetCore
 
-## Overview
+A lightweight and testable network abstraction layer for iOS, inspired by Clean Architecture.
 
-```
-Client → Middleware(s) → NetworkService → Real Request or Retry → Response
-```
+## Features
 
-- Built on **`async/await`**** concurrency**
-- Supports **Combine** via `.publisher()` extension
-- Easily testable with `MockService` and in-memory mocks
-- **Security-first** with Keychain token storage and JWT-based proactive refresh
+- Protocol-oriented and dependency-injected networking
+- Support for query parameters, JSON, raw, and multipart bodies
+- Middleware system for header injection and request transformation
+- Full support for async/await with extensibility for Combine
+- Built-in mockable test infrastructure with error coverage
 
-## Core Components
+## Installation
 
-| Component           | Description                                          |
-| ------------------- | ---------------------------------------------------- |
-| `NetworkRequest`    | Defines a request and its associated response type   |
-| `NetworkService`    | Handles actual network calls (uses `URLSession`)     |
-| `NetworkMiddleware` | Chainable request mutators (e.g. headers, auth)      |
-| `TokenStore`        | Stores Access/RefreshToken — uses Keychain securely  |
-| `TokenRefresher`    | Handles refresh token logic to get new access tokens |
-| `JWTToken`          | Parses JWT `exp` field for proactive refresh checks  |
-
-
-## Security & Expiry
-
-- AccessToken is securely stored via `Keychain`
-- If the token is close to expiration, it's proactively refreshed
-- If the `RefreshToken` is invalid or expired, logout is triggered automatically
-
-
-## Testability
-
-- `MockNetworkService`: Injects responses without real network
-- `MockTokenRefresher` and in-memory token stores available for flow validation
-- Combine-based `.publisher()` also testable
-
-
-## Usage Example
+### Swift Package Manager
 
 ```swift
-let service = MiddlewareNetworkService(
-    base: RealNetworkService(),
-    middlewares: [
-        HeaderMiddleware(),
-        AuthMiddleware(tokenStore: store, tokenRefresher: refresher),
-        LoggerMiddleware()
-    ],
-    retryHandler: { request, error in
-        try await authMiddleware.retry(request: request, error: error, using: RealNetworkService())
-    }
+.package(url: "https://github.com/hsyyim/SwiftNetCore.git", from: "1.0.0")
+```
+
+```swift
+.target(
+  name: "MyApp",
+  dependencies: [
+    .product(name: "SwiftNetCore", package: "SwiftNetCore")
+  ]
+)
+```
+
+## Modules Overview
+
+| Layer           | Responsibility                                                                          |
+|----------------|-------------------------------------------------------------------------------------------|
+| Core           | Protocols like `NetworkRequest`, `NetworkService`, `RequestBody`, `APIHostProviding`     |
+| Implementation | Concrete services like `URLSessionNetworkService`, `MockNetworkService`                  |
+| Middleware     | Reusable request mutators conforming to `NetworkMiddleware`                              |
+
+## Example Usage
+
+```swift
+struct GetUserRequest: NetworkRequest {
+  typealias Response = UserDTO
+  var path: String { "/users/123" }
+  var method: HTTPMethod { .get }
+}
+```
+
+```swift
+let service = URLSessionNetworkService(
+  session: URLSession.shared,
+  hostProvider: MyHostProvider()
 )
 
-let response = try await service.fetch(MyRequest())
+let user = try await service.fetch(GetUserRequest())
 ```
 
-Or with Combine:
+## 🧪 Testing
 
 ```swift
-service.publisher(MyRequest())
-    .sink(receiveCompletion: { ... }, receiveValue: { ... })
-    .store(in: &cancellables)
+let mockService = MockNetworkService(
+  hostProvider: DummyHost(),
+  handler: { _ in return Data(...) }
+)
 ```
 
+---
 
-## 📄 License
+## 📋 License
 
-This module is licensed under the [MIT License](./LICENSE).
-
+MIT © 2024-present hsyyim
