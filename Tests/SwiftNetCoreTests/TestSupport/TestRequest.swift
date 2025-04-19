@@ -8,7 +8,7 @@
 import Foundation
 @testable import SwiftNetCore
 
-struct TestRequest: NetworkRequest {
+struct TestRequest: NetworkRequest, Sendable {
     typealias Response = TestResponse
     
     var path: String { "/test" }

@@ -7,12 +7,19 @@
 
 import Foundation
 
-public struct MultipartFormData {
-    public struct File {
+public struct MultipartFormData: Sendable {
+    public struct File: Sendable {
         public let name: String
         public let filename: String
         public let data: Data
         public let mimeType: String
+        
+        public init(name: String, filename: String, data: Data, mimeType: String) {
+            self.name = name
+            self.filename = filename
+            self.data = data
+            self.mimeType = mimeType
+        }
     }
 
     private let boundary = UUID().uuidString

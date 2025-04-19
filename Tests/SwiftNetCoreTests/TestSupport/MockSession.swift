@@ -8,10 +8,10 @@
 import Foundation
 @testable import SwiftNetCore
 
-final class MockSession: URLSessionProtocol {
-    private var handler: (URLRequest) throws -> (Data, URLResponse)
+final class MockSession: URLSessionProtocol, @unchecked Sendable {
+    private var handler: @Sendable (URLRequest) throws -> (Data, URLResponse)
 
-    init(handler: @escaping (URLRequest) throws -> (Data, URLResponse)) {
+    init(handler: @escaping @Sendable (URLRequest) throws -> (Data, URLResponse)) {
         self.handler = handler
     }
 

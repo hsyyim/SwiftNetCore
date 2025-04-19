@@ -17,7 +17,7 @@ final class MiddlewareNerworkServiceTests: XCTestCase {
     
     func test_middleware_modifies_request_header() async throws {
         // Given
-        let middleware = TestHeaderMiddleware()
+        let middleware = TestHeaderMiddleware(headerName: "X-Test", headerValue: "true")
         
         let data = try JSONEncoder().encode(TestResponse(id: 1, name: "middleware"))
         

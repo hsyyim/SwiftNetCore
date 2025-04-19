@@ -7,12 +7,13 @@
 
 import Foundation
 
-public enum NetworkError: Error, Equatable {
+public enum NetworkError: Error, Equatable, Sendable {
     case invalidRequest
     case transportError(URLError)
     case serverError(statusCode: Int, data: Data?)
     case decodingFailed(Error)
     case unknown(Error)
+    case cancelled
     
     public static func == (lhs: NetworkError, rhs: NetworkError) -> Bool {
         switch (lhs, rhs) {
@@ -21,6 +22,7 @@ public enum NetworkError: Error, Equatable {
         case (.serverError(statusCode: let c1, _), .serverError(statusCode: let c2, _)): return c1 == c2
         case (.decodingFailed, .decodingFailed): return true
         case (.unknown, .unknown): return true
+        case (.cancelled, .cancelled): return true
         default: return false
         }
     }
@@ -38,6 +40,8 @@ extension NetworkError: LocalizedError {
             return "Failed to decode response: \(error.localizedDescription)"
         case .unknown(let error):
             return "An unknown error occurred: \(error.localizedDescription)"
+        case .cancelled:
+            return "The request was cancelled."
         }
     }
 }

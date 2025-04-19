@@ -8,10 +8,13 @@
 import Foundation
 @testable import SwiftNetCore
 
-struct TestHeaderMiddleware: NetworkMiddleware {
+struct TestHeaderMiddleware: NetworkMiddleware, Sendable {
+    let headerName: String
+    let headerValue: String
+    
     func process(_ request: URLRequest) async throws -> URLRequest {
-        var req = request
-        req.setValue("true", forHTTPHeaderField: "X-Test")
-        return req
+        var modifiedRequest = request
+        modifiedRequest.setValue(headerValue, forHTTPHeaderField: headerName)
+        return modifiedRequest
     }
 }

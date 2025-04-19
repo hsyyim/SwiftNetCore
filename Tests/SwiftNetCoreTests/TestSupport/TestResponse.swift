@@ -8,7 +8,7 @@
 import Foundation
 @testable import SwiftNetCore
 
-struct TestResponse: Codable, Equatable {
+struct TestResponse: Codable, Equatable, Sendable {
     let id: Int
     let name: String
 }

@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol NetworkMiddleware {
+public protocol NetworkMiddleware: Sendable {
     func process(_ request: URLRequest) async throws -> URLRequest
 }
